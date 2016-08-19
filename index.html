@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Weather fuckin report</title>
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/weather-icons.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body id="my_view">
+    <div class="container">
+      <div class="weather-icon">
+        <i class="wi" :class="[classWeather[0]]"></i>
+      </div>
+      <div class="weather-info">
+        <h1>{{ loc.city }} <br> <span>{{ curTempDisplay }}</span>
+          <span class="btn btn-deg" :class="{ 'btn-deactivate': displayMode }"  @click="getTemp(0)">°C</span> |
+          <span class="btn btn-deg" :class="{ 'btn-deactivate': !displayMode }"  @click="getTemp(1)">°F</span>
+        </h1>
+
+      </div>
+      <div class="weather-quotes">
+        {{{ classWeather[1] }}}
+      </div>
+    </div>
+
+    <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="node_modules/vue-resource/dist/vue-resource.js"></script>
+    <script>
+    var locs = 'http://ip-api.com/json';
+    var C = 0, F = 1;
+      new Vue({
+        el: '#my_view',
+        data: {
+          loc: '',
+          weather: '',
+          temp: 0,
+          lat: 0,
+          lon: 0,
+          displayMode: C,
+          icon: [],
+          obj: null
+        },
+        ready: function() {
+          this.getLocs()
+        },
+        computed: {
+          curTempDisplay: function () {
+            if (this.temp != null) {
+              if (this.displayMode == C) {
+                return this.temp;
+              } else {
+                return Math.round((this.temp * 9/5) + 32)
+              }
+            } else {
+              return null;
+            }
+          },
+          classWeather: function () {
+            if (this.obj != null) {
+              var weatherID = this.obj.weather[0].id
+              if (weatherID >= 200 && weatherID <= 232) {
+                return ['wi-thunderstorm', '<h2>fucking <span class="hot">hot.</span> as hell</h2>']
+              } else if (weatherID >= 300 && weatherID <= 321) {
+                return ['wi-sprinkle', '<h2>freezing <span class="cold">cold.</span> like a fucking fridge</h2>']
+              } else if (weatherID >= 500 && weatherID <= 531) {
+                return ['wi-rain', '<h2>freezing <span class="cold">cold.</span> like a fucking fridge</h2>']
+              } else if (weatherID >= 600 && weatherID <= 622) {
+                return ['wi-snow', '<h2>freezing <span class="cold">cold.</span> like a fucking fridge</h2>']
+              } else if (weatherID >= 701 && weatherID <= 781) {
+                return ['wi-smog', '<h2>just fucking <span class="grey">grey.</span></h2>']
+              } else if (weatherID >= 800 && weatherID <= 804) {
+                return ['wi-day-cloudy', '<h2>fucking <span class="love">love.</span> is in the air</h2>']
+              } else if (weatherID >= 900 && weatherID <= 962) {
+                return ['wi-small-craft-advisory', '<h2>sun <span class="sun">bright.</span> like a fucking diamond.</h2>']
+              }
+            }
+            return ''
+          }
+        },
+        methods: {
+          getLocs: function () {
+            this.$http.get(locs).then((response) => {
+              this.$set('loc', response.json())
+              this.lat = this.loc.lat
+              this.lon = this.loc.lon
+
+              this.getWeather()
+            }, (response) => {
+              // if api not working
+              console.log(response)
+            })
+          },
+          getWeather: function () {
+            var weathers = 'http://api.openweathermap.org/data/2.5/weather?lat='+this.lat+'&lon='+this.lon+'&units=metric&appid=c0ed9b5a972dc3badce61b71be4e2773'
+            this.$http.get(weathers).then((resp) => {
+              this.$set('weather', resp.json())
+              this.temp = Math.round(this.weather.main.temp)
+              this.obj = this.weather
+            }, (resp) => {
+              // if api not working
+              console.log(resp)
+            })
+          },
+          getTemp: function (option) {
+            this.displayMode = option;
+          },
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
+
+body {
+    line-height: 1.5;
+    // padding: 4em 1em;
+    color: #555;
+    font-family: "Oswald", "Roboto", sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.4em;
+    background: #eee;
+}
+
+
+.container {
+  width: 18em;
+  margin: 0 auto;
+  // background: rgba(204, 204, 204, .5);
+  background: #fff;
+  padding: 1em;
+}
+.weather-icon {
+  width: 50%;
+  float: left;
+}
+
+.weather-info {
+  width: 50%;
+  float: left;
+  text-align: end;
+}
+
+.weather-quotes {
+  width: 50%;
+  clear: both;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: lighter;
+  margin-bottom: -30px;
+  color: #eee;
+
+  > span {
+    font-weight: bolder;
+    color: #000;
+  }
+}
+
+h2 {
+    font-size: 3em;
+    line-height: 1em;
+}
+
+.color {
+  color: #d48e31;
+  // #d48f35; red
+  // #5e71b3; red
+  // #5a75b3; blue
+  // #979797; grey
+  // #b7215f; pink
+}
+
+.love {
+  color: #b7215f;
+}
+
+.grey {
+  color: #979797;
+}
+
+.cold {
+  color: #5a75b3;
+}
+
+.rain {
+  color: #5a75b3;
+}
+
+.hot {
+  color: #5e71b3;
+}
+
+.sun {
+  color: #d48f35;
+}
+
+.wi {
+    font-size: 2.5em;
+    padding: .5em;
+}
+
+.btn-deactivate {
+  color: #DDD;
+  cursor: pointer;
+}
+.btn-deg {
+/* prevent selection of text inside keys */
+  font-size: 0.6em;
+  user-select: none;
+}
